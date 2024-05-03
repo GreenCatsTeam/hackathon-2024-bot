@@ -10,9 +10,13 @@ require a bot token.
 """
 import json
 import logging
+import os
+from dotenv import load_dotenv
 
 from telegram import KeyboardButton, ReplyKeyboardMarkup, ReplyKeyboardRemove, Update, WebAppInfo
 from telegram.ext import Application, CommandHandler, ContextTypes, MessageHandler, filters
+
+load_dotenv()
 
 # Enable logging
 logging.basicConfig(
@@ -56,7 +60,8 @@ async def web_app_data(update: Update, context: ContextTypes.DEFAULT_TYPE) -> No
 def main() -> None:
     """Start the bot."""
     # Create the Application and pass it your bot's token.
-    application = Application.builder().token("TOKEN").build()
+    print(os.getenv("TGTOKEN"))
+    application = Application.builder().token(os.getenv("TGTOKEN")).build()
 
     application.add_handler(CommandHandler("start", start))
     application.add_handler(MessageHandler(filters.StatusUpdate.WEB_APP_DATA, web_app_data))
